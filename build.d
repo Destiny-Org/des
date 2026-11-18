@@ -36,9 +36,9 @@ immutable VersionFilePath = RootPath.buildPath("source", "dub", "version_.d");
 immutable SourceListPath = RootPath.buildPath("build-files.txt");
 /// Path at which the newly built `dub` binary will be
 version (Windows) {
-	immutable DubBinPath = RootPath.buildPath("bin", "dub.exe");
+	immutable DubBinPath = RootPath.buildPath("bin", "des.exe");
 } else {
-	immutable DubBinPath = RootPath.buildPath("bin", "dub");
+	immutable DubBinPath = RootPath.buildPath("bin", "des");
 }
 
 // Flags for DMD

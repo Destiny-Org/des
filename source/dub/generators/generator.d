@@ -247,7 +247,7 @@ class ProjectGenerator
 		used in a dependency are also applied to all dependents.
 
 		Note: The upwards inheritance is done at last so that siblings do not
-		influence each other, also see https://github.com/dlang/dub/pull/1128.
+		influence each other, also see upstream dub pull request 1128.
 
 		Note: Targets without output are integrated into their
 		dependents and removed from `targets`.
@@ -1223,7 +1223,7 @@ private void storeRecursiveInvokations(ref const(string[string])[] env, string[]
 }
 
 version(Posix) {
-    // https://github.com/dlang/dub/issues/2238
+    // upstream dub issue 2238
 	unittest {
 		import dub.recipe.io : parsePackageRecipe;
 		import dub.compilers.gdc : GDCCompiler;

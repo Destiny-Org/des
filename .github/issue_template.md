@@ -1,8 +1,7 @@
 <!--
 Please search for existing solutions to your problem before filling out this bug report template.
 
-- Issue list: https://github.com/dlang/dub/issues?q=is%3Aissue
-- Cookbook: https://github.com/dlang/dub/wiki/Cookbook
+- Issue list: https://github.com/Destiny-Org/dub/issues
 - Stack Overflow: https://stackoverflow.com/questions/tagged/dub
 -->
 

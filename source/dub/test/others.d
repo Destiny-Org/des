@@ -12,7 +12,7 @@ import std.algorithm;
 import std.format;
 import dub.test.base;
 
-// https://github.com/dlang/dub/issues/2696
+// upstream dub issue 2696
 unittest
 {
     const ValidURL = `git+https://example.com/dlang/dub`;
@@ -47,7 +47,7 @@ unittest
     assert(dub.project.getDependency("dep1", true), "Missing 'dep1' dependency");
 }
 
-// Test for https://github.com/dlang/dub/pull/2481
+// Test for upstream dub pull request 2481
 // Make sure packages found with `add-path` take priority.
 unittest
 {

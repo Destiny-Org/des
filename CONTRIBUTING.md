@@ -12,7 +12,7 @@ For bugfixes make sure to automatically [close the issue via commit message](htt
 
 ## Documentation
 
-The source of the documentation for DUB lives in a separate repository: https://github.com/dlang/dub-docs.
+The documentation for this fork lives in its README.
 
 ## Backwards compatiblity
 

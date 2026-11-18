@@ -35,9 +35,10 @@ import std.string;
 
 static this()
 {
-	import dub.compilers.dmd : DMDCompiler;
+	import dub.compilers.dmd : DestinyCompiler, DMDCompiler;
 	import dub.compilers.gdc : GDCCompiler;
 	import dub.compilers.ldc : LDCCompiler;
+	registerCompiler(new DestinyCompiler);
 	registerCompiler(new DMDCompiler);
 	registerCompiler(new GDCCompiler);
 	registerCompiler(new LDCCompiler);
@@ -45,10 +46,11 @@ static this()
 
 deprecated("use defaultRegistryURLs") enum defaultRegistryURL = defaultRegistryURLs[0];
 
-/// The URL to the official package registry and it's default fallback registries.
+/// Destiny: the default package source, Destiny-Org/packages on GitHub.
+/// DES never fetches from code.dlang.org: D packages need changes to build
+/// with Destiny, so they are used once ported into Destiny-Org/packages.
 static immutable string[] defaultRegistryURLs = [
-	"https://code.dlang.org/",
-	"https://codemirror.dlang.org/"
+	defaultDestinyPackagesUrl
 ];
 
 /** Returns a default list of package suppliers.
@@ -82,6 +84,16 @@ PackageSupplier getRegistryPackageSupplier(string url)
 // but `commandline` is currently completely excluded.
 package(dub) PackageSupplier _getRegistryPackageSupplier(string url)
 {
+	import std.algorithm.searching : canFind;
+	import std.exception : enforce;
+
+	// Destiny: the one place every package source is created (default,
+	// configured, DUB_REGISTRY and --registry)
+	enforce(!url.canFind("dlang.org"),
+		"DES does not fetch packages from the D registry (" ~ url ~ "). "
+		~ "Destiny packages come from Destiny-Org/packages; port a D package there to use it.");
+	if (url.startsWith(destinySupplierScheme))
+		return new DestinyPackageSupplier(url[destinySupplierScheme.length .. $]);
 	switch (url.startsWith("dub+", "mvn+", "file://"))
 	{
 		case 1:
@@ -97,11 +109,11 @@ package(dub) PackageSupplier _getRegistryPackageSupplier(string url)
 
 deprecated unittest
 {
-	auto dubRegistryPackageSupplier = getRegistryPackageSupplier("dub+https://code.dlang.org");
-	assert(dubRegistryPackageSupplier.description.canFind(" https://code.dlang.org"));
+	auto dubRegistryPackageSupplier = getRegistryPackageSupplier("dub+https://registry.example.com");
+	assert(dubRegistryPackageSupplier.description.canFind(" https://registry.example.com"));
 
-	dubRegistryPackageSupplier = getRegistryPackageSupplier("https://code.dlang.org");
-	assert(dubRegistryPackageSupplier.description.canFind(" https://code.dlang.org"));
+	dubRegistryPackageSupplier = getRegistryPackageSupplier("https://registry.example.com");
+	assert(dubRegistryPackageSupplier.description.canFind(" https://registry.example.com"));
 
 	auto mavenRegistryPackageSupplier = getRegistryPackageSupplier("mvn+http://localhost:8040/maven/libs-release/dubpackages");
 	assert(mavenRegistryPackageSupplier.description.canFind(" http://localhost:8040/maven/libs-release/dubpackages"));
@@ -410,17 +422,7 @@ class Dub {
 	 */
 	protected PackageSupplier makePackageSupplier(string url)
 	{
-		switch (url.startsWith("dub+", "mvn+", "file://"))
-		{
-		case 1:
-			return new RegistryPackageSupplier(URL(url[4..$]));
-		case 2:
-			return new MavenRegistryPackageSupplier(URL(url[4..$]));
-		case 3:
-			return new FileSystemPackageSupplier(NativePath(url[7..$]));
-		default:
-			return new RegistryPackageSupplier(URL(url));
-		}
+		return _getRegistryPackageSupplier(url);
 	}
 
 	/// ditto
@@ -473,7 +475,7 @@ class Dub {
 
 		If set, the "defaultCompiler" field of the DUB user or system
 		configuration file will be used. Otherwise the PATH environment variable
-		will be searched for files named "dmd", "gdc", "gdmd", "ldc2", "ldmd2"
+		will be searched for files named "destiny", "dmd", "gdc", "gdmd", "ldc2", "ldmd2"
 		(in that order, taking into account operating system specific file
 		extensions) and the first match is returned. If no match is found, "dmd"
 		will be used.
@@ -1618,7 +1620,7 @@ class Dub {
 		version (Windows) enum sep = ";", exe = ".exe";
 		version (Posix) enum sep = ":", exe = "";
 
-		auto compilers = ["dmd", "gdc", "gdmd", "ldc2", "ldmd2"];
+		auto compilers = ["destiny", "dmd", "gdc", "gdmd", "ldc2", "ldmd2"];
 		// If a compiler name is specified, look for it next to dub.
 		// Otherwise, look for any of the common compilers adjacent to dub.
 		if (result.length)

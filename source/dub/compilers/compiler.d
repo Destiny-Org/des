@@ -53,8 +53,8 @@ class CompilerInvocationException : Exception
 /** Returns a compiler handler for a given binary name.
 
 	The name will be compared against the canonical name of each registered
-	compiler handler. If no match is found, the sub strings "dmd", "gdc" and
-	"ldc", in this order, will be searched within the name. If this doesn't
+	compiler handler. If no match is found, the sub strings "destiny", "dmd",
+	"gdc" and "ldc", in this order, will be searched within the name. If this doesn't
 	yield a match either, an $(LREF UnknownCompilerException) will be thrown.
 */
 Compiler getCompiler(string name)
@@ -64,6 +64,7 @@ Compiler getCompiler(string name)
 			return c;
 
 	// try to match names like gdmd or gdc-2.61
+	if (name.canFind("destiny")) return getCompiler("destiny");
 	if (name.canFind("dmd")) return getCompiler("dmd");
 	if (name.canFind("gdc")) return getCompiler("gdc");
 	if (name.canFind("ldc")) return getCompiler("ldc");

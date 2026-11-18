@@ -395,7 +395,7 @@ int runDubCommandLine(string[] args)
 	// or not is detected in order to disable colors if the output isn't a console
 	initLogging();
 
-	logDiagnostic("DUB version %s", getDUBVersion());
+	logDiagnostic("DES version %s", getDUBVersion());
 
 	{
 		version(Windows) {
@@ -489,7 +489,7 @@ int runDubCommandLine(string[] args)
 	}
 
 	if (cmd is null) {
-		logInfoNoTag("USAGE: dub [--version] [<command>] [<options...>] [-- [<application arguments...>]]");
+		logInfoNoTag("USAGE: des [--version] [<command>] [<options...>] [-- [<application arguments...>]]");
 		logInfoNoTag("");
 		logError("Unknown command: %s", command_name);
 		import std.algorithm.iteration : filter;
@@ -523,7 +523,7 @@ int runDubCommandLine(string[] args)
 	auto remaining_args = command_args.extractRemainingArgs();
 	if (remaining_args.any!(a => a.startsWith("-"))) {
 		logError("Unknown command line flags: %s", remaining_args.filter!(a => a.startsWith("-")).array.join(" ").color(Mode.bold));
-		logInfo(`Type "%s" to get a list of all supported flags.`, text("dub ", cmd.name, " -h").color(Mode.bold));
+		logInfo(`Type "%s" to get a list of all supported flags.`, text("des ", cmd.name, " -h").color(Mode.bold));
 		return 1;
 	}
 
@@ -541,7 +541,7 @@ int runDubCommandLine(string[] args)
 		logError("%s", e.msg);
 		logDebug("Full exception: %s", e.toString().sanitize);
 		logInfo(`Run "%s" for more information about the "%s" command.`,
-			text("dub ", cmd.name, " -h").color(Mode.bold), cmd.name.color(Mode.bold));
+			text("des ", cmd.name, " -h").color(Mode.bold), cmd.name.color(Mode.bold));
 		return 1;
 	}
 	catch (Exception e) {
@@ -574,7 +574,7 @@ struct CommonOptions {
 		// `auto`, `always`, `never` is being used for compatibility with most
 		// other development and linux tools, after evaluating what other tools
 		// are doing, to help users intuitively pick correct values.
-		// See https://github.com/dlang/dub/issues/2410 for discussion
+		// See upstream dub issue 2410 for discussion
 		if (!value.length || value == "auto" || value == "automatic")
 			colorMode = Color.automatic;
 		else if (value == "always" || value == "on")
@@ -618,7 +618,8 @@ struct CommonOptions {
 		args.getopt("recipe", &recipeFile, ["Loads a custom recipe path instead of dub.json/dub.sdl"]);
 		args.getopt("registry", &registry_urls, [
 			"Search the given registry URL first when resolving dependencies. Can be specified multiple times. Available registry types:",
-			"  DUB: URL to DUB registry (default)",
+			"  Destiny: destiny+https://github.com/<owner>/<repo> (default: "~defaultRegistryURLs[0]~"), or destiny+file://<local clone>",
+			"  DUB: URL to a DUB registry (not code.dlang.org)",
 			"  Maven: URL to Maven repository + group id containing dub packages as artifacts. E.g. mvn+http://localhost:8040/maven/libs-release/dubpackages",
 			]);
 		args.getopt("skip-registry", &skipRegistry, &parseSkipRegistry, [
@@ -923,7 +924,7 @@ class Command {
 				logInfoNoTag("No package manifest (dub.json or dub.sdl) was found in");
 				logInfoNoTag(dub.rootPath.toNativeString());
 				logInfoNoTag("Please run DUB from the root directory of an existing package, or run");
-				logInfoNoTag("\"%s\" to get information on creating a new package.", "dub init --help".color(Mode.bold));
+				logInfoNoTag("\"%s\" to get information on creating a new package.", "des init --help".color(Mode.bold));
 				logInfoNoTag("");
 			}
 			return false;
@@ -1002,7 +1003,7 @@ class InitCommand : Command {
 			"",
 			"Custom templates can be defined by packages by providing a sub-package called \"init-exec\". No default source files are added in this case.",
 			"The \"init-exec\" sub-package is compiled and executed inside the destination folder after the base project directory has been created.",
-			"Free arguments \"dub init -t custom -- free args\" are passed into the \"init-exec\" sub-package as app arguments."
+			"Free arguments \"des init -t custom -- free args\" are passed into the \"init-exec\" sub-package as app arguments."
 		];
 		this.acceptsAppArgs = true;
 	}
@@ -2003,7 +2004,7 @@ class AddCommand : Command {
 		this.helpText = [
 			"Adds <packages> as dependencies.",
 			"",
-			"Running \"dub add <package>\" is the same as adding <package> to the \"dependencies\" section in dub.json/dub.sdl.",
+			"Running \"des add <package>\" is the same as adding <package> to the \"dependencies\" section in dub.json/dub.sdl.",
 			"If no version is specified for one of the packages, dub will query the registry for the latest version."
 		];
 	}
@@ -2496,7 +2497,7 @@ class ListCommand : Command {
 		this.helpText = [
 			"Prints a list of all or selected local packages. This includes all cached "~
 			"packages (user or system wide), all packages in the package search paths "~
-			"(\"dub add-path\") and all manually registered packages (\"dub add-local\"). "~
+			"(\"des add-path\") and all manually registered packages (\"des add-local\"). "~
 			"If a package (and optionally a version spec) is specified, only matching packages are shown."
 		];
 	}
@@ -2990,13 +2991,13 @@ private {
 private void showHelp(in CommandGroup[] commands, CommandArgs common_args)
 {
 	writeln(
-`USAGE: dub [--version] [<command>] [<options...>] [-- [<application arguments...>]]
+`USAGE: des [--version] [<command>] [<options...>] [-- [<application arguments...>]]
 
 Manages the DUB project in the current directory. If the command is omitted,
 DUB will default to "run". When running an application, "--" can be used to
 separate DUB options from options passed to the application.
 
-Run "dub <command> --help" to get help for a specific command.
+Run "des <command> --help" to get help for a specific command.
 
 You can use the "http_proxy" environment variable to configure a proxy server
 to be used for fetching packages.
@@ -3038,12 +3039,12 @@ Available commands
 
 private void showVersion()
 {
-	writefln("DUB version %s, built on %s", getDUBVersion(), __DATE__);
+	writefln("DES version %s, built on %s", getDUBVersion(), __DATE__);
 }
 
 private void showCommandHelp(Command cmd, CommandArgs args, CommandArgs common_args)
 {
-	writefln(`USAGE: dub %s %s [<options...>]%s`, cmd.name, cmd.argumentsPattern, cmd.acceptsAppArgs ? " [-- <application arguments...>]": null);
+	writefln(`USAGE: des %s %s [<options...>]%s`, cmd.name, cmd.argumentsPattern, cmd.acceptsAppArgs ? " [-- <application arguments...>]": null);
 	writeln();
 	foreach (ln; cmd.helpText)
 		ln.writeWrapped();
@@ -3064,7 +3065,7 @@ private void showCommandHelp(Command cmd, CommandArgs args, CommandArgs common_a
 	writeln();
 	writeOptions(common_args);
 	writeln();
-	writefln("DUB version %s, built on %s", getDUBVersion(), __DATE__);
+	writefln("DES version %s, built on %s", getDUBVersion(), __DATE__);
 }
 
 private void writeOptions(CommandArgs args)
@@ -3232,7 +3233,7 @@ private struct UserPackageDesc
 
 unittest
 {
-	// https://github.com/dlang/dub/issues/1681
+	// upstream dub issue 1681
 	assert(UserPackageDesc.fromString("") == UserPackageDesc("", VersionRange.Any));
 
 	assert(UserPackageDesc.fromString("foo") == UserPackageDesc("foo", VersionRange.Any));

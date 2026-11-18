@@ -6,6 +6,7 @@ copyright "Copyright © 2012-2016 rejectedsoftware e.K., Copyright © 2012-2014 
 license "MIT"
 
 targetPath "bin"
+targetName "des"  // Destiny: the command is `des`; the package (library) stays `dub`
 
 // Deprecated module(s)
 excludedSourceFiles "source/dub/packagesupplier.d"

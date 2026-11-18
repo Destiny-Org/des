@@ -24,7 +24,7 @@ version (DigitalMars) version (D_Coverage)
 }
 
 /**
- * Workaround https://github.com/dlang/dub/issues/1812
+ * Workaround upstream dub issue 1812
  *
  * On Linux, a segmentation fault happens when dub is compiled with a recent
  * compiler. While not confirmed, the logs seem to point to parallel marking

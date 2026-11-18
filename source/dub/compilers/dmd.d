@@ -414,3 +414,10 @@ config    /etc/dmd.conf
 		return ["-quiet", "-c", "-o-", "-v"];
 	}
 }
+
+/// Destiny: the Destiny compiler (`destiny`). Its command line is dmd's, so
+/// it shares everything with `DMDCompiler` except its name.
+class DestinyCompiler : DMDCompiler {
+	override @property string name() const { return "destiny"; }
+}
+

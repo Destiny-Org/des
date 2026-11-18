@@ -39,7 +39,7 @@ unittest
     assert(!dub.packageManager().getPackage(PackageName("b:b"), Version("1.1.0")));
 }
 
-// https://github.com/dlang/dub/issues/2973
+// upstream dub issue 2973
 unittest
 {
     scope dub = new TestDub((scope Filesystem root) {

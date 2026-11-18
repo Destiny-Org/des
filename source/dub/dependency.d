@@ -729,7 +729,7 @@ unittest {
 unittest {
 	assert(VersionRange.fromString("~>1.0.4").toString() == "~>1.0.4");
 	assert(VersionRange.fromString("~>1.4").toString() == "~>1.4");
-	// https://github.com/dlang/dub/issues/2830
+	// upstream dub issue 2830
 	assert(VersionRange.fromString("~>2").toString() == "~>2.0");
 	assert(VersionRange.fromString("~>5.0").toString() == "~>5.0");
 
@@ -873,7 +873,7 @@ struct Version {
 	*/
 	static Version fromString(string vers) @safe pure { return Version(vers); }
 
-	bool opEquals(in Version oth) const scope @safe pure
+	bool opEquals(scope const Version oth) const scope @safe pure
 	{
 		return opCmp(oth) == 0;
 	}
@@ -917,7 +917,7 @@ struct Version {
 		compared using SemVer semantics, while branches are compared
 		lexicographically.
 	*/
-	int opCmp(in Version other) const scope @safe pure
+	int opCmp(scope const Version other) const scope @safe pure
 	{
 		if (isBranch || other.isBranch) {
 			if(m_version == other.m_version) return 0;
@@ -1162,7 +1162,7 @@ public struct VersionRange
 		return m_versA <= m_versB && doCmp(m_inclusiveA && m_inclusiveB, m_versA, m_versB);
 	}
 
-	private static bool doCmp(bool inclusive, in Version a, in Version b)
+	private static bool doCmp(bool inclusive, scope const Version a, scope const Version b)
 		@safe
 	{
 		return inclusive ? a <= b : a < b;
@@ -1252,7 +1252,7 @@ unittest {
 }
 
 // Erased version specification for dependency, converted to "" instead of ">0.0.0"
-// https://github.com/dlang/dub/issues/2901
+// upstream dub issue 2901
 unittest
 {
     assert(VersionRange.fromString(">0.0.0").toString() == ">0.0.0");

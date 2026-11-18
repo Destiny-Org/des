@@ -76,6 +76,7 @@ source/dub/internal/logging.d
 source/dub/package_.d
 source/dub/packagemanager.d
 source/dub/packagesupplier.d
+source/dub/packagesuppliers/destiny.d
 source/dub/packagesuppliers/fallback.d
 source/dub/packagesuppliers/filesystem.d
 source/dub/packagesuppliers/maven.d

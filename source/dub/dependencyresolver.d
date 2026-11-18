@@ -239,7 +239,7 @@ class DependencyResolver(CONFIGS, CONFIG) {
 			"The dependency resolution process is taking too long. The"
 			~ " dependency graph is likely hitting a pathological case in"
 			~ " the resolution algorithm. Please file a bug report at"
-			~ " https://github.com/dlang/dub/issues and mention the package"
+			~ " https://github.com/Destiny-Org/dub/issues and mention the package"
 			~ " recipe that reproduces this error.");
 
 		auto dep = &dependencies[depidx];

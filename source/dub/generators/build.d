@@ -752,7 +752,7 @@ private string shrinkPath(NativePath path, NativePath base)
 	if (!path.absolute) return orig;
 	version (Windows)
 	{
-		// avoid relative paths starting with `..\`: https://github.com/dlang/dub/issues/2143
+		// avoid relative paths starting with `..\`: upstream dub issue 2143
 		if (!path.startsWith(base)) return orig;
 	}
 	auto rel = path.relativeTo(base).toNativeString();

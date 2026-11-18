@@ -20,7 +20,7 @@ module dub.internal.configy.Utils;
 import std.format;
 
 /// Type of sink used by the `toString`
-package alias SinkType = void delegate (in char[]) @safe;
+package alias SinkType = void delegate (scope const(char)[]) @safe; // scope: callers may pass stack buffers
 
 /*******************************************************************************
 

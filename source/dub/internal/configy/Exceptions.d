@@ -127,11 +127,11 @@ public abstract class ConfigException : Exception
 
         sink("(");
         if (useColors) sink(Cyan);
-        sink(unsignedToTempString(this.yamlPosition.line, buffer));
+        sink(unsignedToTempString(this.yamlPosition.line, buffer).idup); // a copy: `sink` (an `in` parameter) may keep it
         if (useColors) sink(Reset);
         sink(":");
         if (useColors) sink(Cyan);
-        sink(unsignedToTempString(this.yamlPosition.column, buffer));
+        sink(unsignedToTempString(this.yamlPosition.column, buffer).idup);
         if (useColors) sink(Reset);
         sink("): ");
 

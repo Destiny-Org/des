@@ -68,3 +68,6 @@ test-unittest-cov-ctfe-source-mod.lst
 test-unittest-cov-ctfe-.dub-code-test-test-library-unittest-cov-ctfe-*-dub_test_root.lst
 
 example.yaml
+
+# documentation is kept locally, not on GitHub
+docs/

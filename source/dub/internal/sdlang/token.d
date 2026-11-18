@@ -45,11 +45,11 @@ struct DateTimeFracUnknownZone
 	Duration fracSecs;
 	string timeZone;
 
-	bool opEquals(const DateTimeFracUnknownZone b) const
+	bool opEquals(const DateTimeFracUnknownZone b) const @safe
 	{
 		return opEquals(b);
 	}
-	bool opEquals(ref const DateTimeFracUnknownZone b) const
+	bool opEquals(ref const DateTimeFracUnknownZone b) const @safe
 	{
 		return
 			this.dateTime == b.dateTime &&
