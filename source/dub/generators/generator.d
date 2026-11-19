@@ -652,7 +652,7 @@ class ProjectGenerator
 		}
 
 		// check all existing source files for version identifiers
-		static immutable dexts = [".d", ".di"];
+		static immutable dexts = [".dd", ".ddi", ".d", ".di"];
 		auto srcs = chain(bs.sourceFiles, bs.importFiles, bs.stringImportFiles)
 			.filter!(f => dexts.canFind(f.extension)).filter!exists;
 		// try to load cached filters first

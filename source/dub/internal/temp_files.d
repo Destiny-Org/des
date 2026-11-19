@@ -24,7 +24,7 @@ NativePath getTempFile(string prefix, string extension = null)
 
 	string fileName = prefix ~ "-" ~ randomUUID.toString() ~ extension;
 
-	if (extension !is null && extension == ".d")
+	if (extension !is null && (extension == ".d" || extension == ".dd")) // module names have no '-' 
 		fileName = fileName.replace("-", "_");
 
 	auto path = getTempDir() ~ fileName;

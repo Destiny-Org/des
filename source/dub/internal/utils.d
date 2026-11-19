@@ -198,6 +198,32 @@ else
 	}
 }
 
+/// Destiny: extensions of source files. Destiny's own are `.dd` (source) and
+/// `.ddi` (interface); D's `.d` and `.di` stay accepted.
+immutable string[] destinySourceExtensions = [".dd", ".d"];
+/// ditto, including interface files
+immutable string[] destinyModuleExtensions = [".dd", ".ddi", ".d", ".di"];
+
+/// Whether `path` is a Destiny or D source file (`.dd` or `.d`)
+bool isDSourceFile(const(char)[] path) @safe pure nothrow @nogc
+{
+	import std.algorithm.searching : endsWith;
+	foreach (ext; destinySourceExtensions)
+		if (path.endsWith(ext))
+			return true;
+	return false;
+}
+
+/// `path` without its `.dd` / `.ddi` / `.d` / `.di` extension
+inout(char)[] stripDExtension(inout(char)[] path) @safe pure nothrow @nogc
+{
+	import std.algorithm.searching : endsWith;
+	foreach (ext; destinyModuleExtensions)
+		if (path.endsWith(ext))
+			return path[0 .. $ - ext.length];
+	return path;
+}
+
 /**
 	Downloads a file from the specified URL.
 
@@ -593,17 +619,17 @@ string determineModuleName(BuildSettings settings, NativePath file, NativePath b
 	if (path_skip == 0)
 	{
 		import std.path;
-		ret ~= mpath[$-1].name.baseName(".d");
+		ret ~= stripDExtension(mpath[$-1].name);
 	}
 	else
 	{
 		foreach (i; 0 .. mpath.length) {
 			import std.path;
 			auto p = mpath[i].name;
-			if (p == "package.d") break ;
+			if (p == "package.d" || p == "package.dd") break ;
 			if (ret.data.length > 0) ret ~= ".";
 			if (i+1 < mpath.length) ret ~= p;
-			else ret ~= p.baseName(".d");
+			else ret ~= stripDExtension(p);
 		}
 	}
 

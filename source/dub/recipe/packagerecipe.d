@@ -534,7 +534,7 @@ struct BuildSettingsTemplate {
 		}
 
  		// collect source files. Note: D source from 'sourcePaths' and C sources from 'cSourcePaths' are joint into 'sourceFiles'
-		dst.addSourceFiles(collectFiles(sourcePaths, "*.d"));
+		dst.addSourceFiles(collectFiles(sourcePaths, "*.{dd,d}")); // Destiny: .dd and D's .d
 		dst.addSourceFiles(collectFiles(cSourcePaths, "*.{c,i}"));
 		auto sourceFiles = dst.sourceFiles.sort();
 
@@ -542,7 +542,7 @@ struct BuildSettingsTemplate {
 		import std.algorithm : copy, setDifference;
 
 		auto importFiles =
-			chain(collectFiles(importPaths, "*.{d,di}"), collectFiles(cImportPaths, "*.h"))
+			chain(collectFiles(importPaths, "*.{dd,ddi,d,di}"), collectFiles(cImportPaths, "*.h"))
 			.array()
 			.sort();
 		immutable nremoved = importFiles.setDifference(sourceFiles).copy(importFiles.release).length;

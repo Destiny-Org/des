@@ -721,7 +721,9 @@ class Package {
 			MainFileSearch: foreach_reverse(sf; bs.sourcePaths.get("", null)){
 				auto p = m_path ~ sf;
 				if( !existsFile(p) ) continue;
-				foreach(fil; ["app.d", "main.d", pkg_name ~ "/main.d", pkg_name ~ "/" ~ "app.d"]){
+				// Destiny: app.dd / main.dd, then D's app.d / main.d
+				foreach(fil; ["app.dd", "main.dd", pkg_name ~ "/main.dd", pkg_name ~ "/" ~ "app.dd",
+						"app.d", "main.d", pkg_name ~ "/main.d", pkg_name ~ "/" ~ "app.d"]){
 					if( existsFile(p ~ fil) ) {
 						app_main_file = (NativePath(sf) ~ fil).toNativeString();
 						break MainFileSearch;

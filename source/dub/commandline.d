@@ -19,7 +19,7 @@ import dub.package_;
 import dub.packagemanager;
 import dub.packagesuppliers;
 import dub.project;
-import dub.internal.utils : getDUBVersion, getClosestMatch, getTempFile;
+import dub.internal.utils : getDUBVersion, getClosestMatch, getTempFile, isDSourceFile;
 
 import dub.internal.dyaml.stdsumtype;
 
@@ -425,7 +425,7 @@ int runDubCommandLine(string[] args)
 		// Read input source code from stdin
 		if (args[1] == "-")
 		{
-			auto path = getTempFile("app", ".d");
+			auto path = getTempFile("app", ".dd");
 			stdin.byChunk(4096).joiner.toFile(path.toNativeString());
 			args = toSinglePackageArgs(args[0], path.toNativeString(), args[2 .. $]);
 		}
@@ -440,7 +440,7 @@ int runDubCommandLine(string[] args)
 		// Gives us `args = [ "dub", "./my_dub_script" "foo", "bar" ]`,
 		// which we need to interpret as:
 		// `args = [ "dub", "./my_dub_script", "--", "foo", "bar" ]`
-		else if (args[1].endsWith(".d"))
+		else if (isDSourceFile(args[1]))
 			args = toSinglePackageArgs(args[0], args[1], args[2 .. $]);
 
 		// Here we have a problem: What if the script name is a command name ?
@@ -449,9 +449,11 @@ int runDubCommandLine(string[] args)
 		// as the shell invocation cannot be controlled.
 		else if (handler.getCommand(args[1]) is null && !args[1].startsWith("-")) {
 			if (std.file.exists(args[1])) {
-				auto path = getTempFile("app", ".d");
+				auto path = getTempFile("app", ".dd");
 				std.file.copy(args[1], path.toNativeString());
 				args = toSinglePackageArgs(args[0], path.toNativeString(), args[2 .. $]);
+			} else if (std.file.exists(args[1].setExtension(".dd"))) {
+				args = toSinglePackageArgs(args[0], args[1].setExtension(".dd"), args[2 .. $]);
 			} else if (std.file.exists(args[1].setExtension(".d"))) {
 				args = toSinglePackageArgs(args[0], args[1].setExtension(".d"), args[2 .. $]);
 			}

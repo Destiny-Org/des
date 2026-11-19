@@ -97,16 +97,16 @@ alias RecipeCallback = void delegate(ref PackageRecipe, ref PackageFormat);
 
 private void initMinimalPackage(NativePath root_path, ref PackageRecipe p, scope void delegate() pre_write_callback)
 {
-	p.description = "A minimal D application.";
+	p.description = "A minimal Destiny application.";
 	pre_write_callback();
 
 	ensureDirectory(root_path ~ "source");
-	write((root_path ~ "source/app.d").toNativeString(),
+	write((root_path ~ "source/app.dd").toNativeString(),
 q{import std.stdio;
 
 void main()
 {
-	writeln("Edit source/app.d to start your project.");
+	writeln("Edit source/app.dd to start your project.");
 }
 });
 }
@@ -121,7 +121,7 @@ private void initVibeDPackage(NativePath root_path, ref PackageRecipe p, scope v
 	ensureDirectory(root_path ~ "source");
 	ensureDirectory(root_path ~ "views");
 	ensureDirectory(root_path ~ "public");
-	write((root_path ~ "source/app.d").toNativeString(),
+	write((root_path ~ "source/app.dd").toNativeString(),
 q{import vibe.vibe;
 
 void main()

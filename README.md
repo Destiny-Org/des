@@ -55,4 +55,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-MIT; see [LICENSE](LICENSE).
+Mozilla Public License 2.0; see [LICENSE](LICENSE) and [NOTICE](NOTICE). The original
+DUB files stay under the MIT License ([LICENSE-MIT](LICENSE-MIT)).

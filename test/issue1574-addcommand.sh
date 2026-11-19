@@ -22,7 +22,7 @@ trap cleanup EXIT
 $DUB init --non-interactive --format=json $tempDir
 cd $tempDir
 
-echo "import gitcompatibledubpackage.subdir.file; void main(){}" > source/app.d
+echo "import gitcompatibledubpackage.subdir.file; void main(){}" > source/app.dd
 $DUB add gitcompatibledubpackage --skip-registry=all --registry=http://localhost:$PORT
 grep -q '"gitcompatibledubpackage"\s*:\s*"~>1\.0\.4"' dub.json
 $DUB add gitcompatibledubpackage=1.0.2 non-existing-issue1574-pkg='~>9.8.7' --skip-registry=all

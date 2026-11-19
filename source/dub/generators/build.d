@@ -370,7 +370,7 @@ class BuildGenerator : ProjectGenerator {
 		}
 
 		// do not pass all source files to RDMD, only the main source file
-		buildsettings.sourceFiles = buildsettings.sourceFiles.filter!(s => !s.endsWith(".d"))().array();
+		buildsettings.sourceFiles = buildsettings.sourceFiles.filter!(s => !isDSourceFile(s))().array();
 		settings.compiler.prepareBuildSettings(buildsettings, settings.platform, BuildSetting.commandLine);
 
 		auto generate_binary = !buildsettings.dflags.canFind("-o-");
@@ -566,7 +566,7 @@ class BuildGenerator : ProjectGenerator {
 	{
 		import std.digest.crc : crc32Of;
 		import std.path : buildNormalizedPath, dirSeparator, relativePath, stripDrive;
-		if (path.endsWith(".d")) path = path[0 .. $-2];
+		if (isDSourceFile(path)) path = stripDExtension(path);
 		auto ret = buildNormalizedPath(cwd.toNativeString(), path).replace(dirSeparator, ".");
 		auto idx = ret.lastIndexOf('.');
 		const objSuffix = getObjSuffix(platform);
@@ -735,10 +735,11 @@ class BuildGenerator : ProjectGenerator {
 
 private NativePath getMainSourceFile(in Package prj)
 {
-	foreach (f; ["source/app.d", "src/app.d", "source/"~prj.name~".d", "src/"~prj.name~".d"])
+	foreach (f; ["source/app.dd", "src/app.dd", "source/"~prj.name~".dd", "src/"~prj.name~".dd",
+			"source/app.d", "src/app.d", "source/"~prj.name~".d", "src/"~prj.name~".d"])
 		if (existsFile(prj.path ~ f))
 			return prj.path ~ f;
-	return prj.path ~ "source/app.d";
+	return prj.path ~ "source/app.dd";
 }
 
 private NativePath getTargetPath(const scope ref BuildSettings bs, const scope ref GeneratorSettings settings)

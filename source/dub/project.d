@@ -324,7 +324,7 @@ class Project {
 			import std.path;
 			tcinfo.sourceFiles[""] ~= custom_main_file.relativeTo(rootPackage.path).toNativeString();
 			tcinfo.importPaths[""] ~= custom_main_file.parentPath.toNativeString();
-			custommodname = custom_main_file.head.name.baseName(".d");
+			custommodname = stripDExtension(custom_main_file.head.name);
 		}
 
 		// prepare the list of tested modules
@@ -334,7 +334,7 @@ class Project {
 			lbuildsettings.importPaths ~= NativePath(mainfil).parentPath.toNativeString;
 		bool firstTimePackage = true;
 		foreach (file; lbuildsettings.sourceFiles) {
-			if (file.endsWith(".d")) {
+			if (isDSourceFile(file)) {
 				auto fname = NativePath(file).head.name;
 				NativePath msf = NativePath(mainfil);
 				if (msf.absolute)
