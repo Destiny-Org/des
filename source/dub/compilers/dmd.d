@@ -327,7 +327,7 @@ config    /etc/dmd.conf
 				if (platform.compiler != "dmd" || platform.isWindows() || platform.platform.canFind("osx"))
 					settings.addDFlags("-shared");
 				else
-					settings.prependDFlags("-shared", "-defaultlib=libphobos2.so");
+					settings.prependDFlags("-shared", "-defaultlib=libfate.so"); // Destiny: Fate is the standard library
 				addDynamicLibName(settings, platform, targetFileName);
 				break;
 			case TargetType.object:

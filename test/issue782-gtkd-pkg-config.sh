@@ -4,7 +4,7 @@
 
 if [ $(uname) != "Linux" ]; then
     echo "Skipping issue782-dtkd-pkg-config test on non-Linux platform..."
-elif [ "${DC}" != "dmd" ]; then
+elif [ "$(basename "${DC}")" != "destiny" ]; then
 	echo "Skipping issue782-dtkd-pkg-config test for ${DC}..."
 else
     echo ${CURR_DIR-$(pwd)}

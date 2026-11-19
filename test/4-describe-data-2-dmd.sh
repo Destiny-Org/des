@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 . $(dirname "${BASH_SOURCE[0]}")/common.sh
+unset DFLAGS # Destiny: the CI exports DFLAGS; this test compares exact compiler flags
 
-if [ "${DC}" != "dmd" ]; then
+if [ "$(basename "${DC}")" != "destiny" ]; then
     echo Skipping DMD-centric test on configuration that lacks DMD.
     exit
 fi

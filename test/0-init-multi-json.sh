@@ -2,7 +2,7 @@
 
 . $(dirname "${BASH_SOURCE[0]}")/common.sh
 packname="0-init-multi-pack"
-deps="openssl logger"
+deps="openssl silly" # Destiny: packages in Destiny-Org/packages
 type="vibe.d"
 
 $DUB init -n $packname $deps --type=$type -f json

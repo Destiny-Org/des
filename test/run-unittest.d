@@ -1,4 +1,4 @@
-#!/usr/bin/env dub
+#!/usr/bin/env des
 /+dub.sdl:
 	name: run_unittest
 	targetName: run-unittest
@@ -69,6 +69,13 @@ int main(string[] args)
 			if (baseName(script.name).among("run-unittest.sh", "common.sh")) continue;
 			const min_frontend = script.name ~ ".min_frontend";
 			if (exists(min_frontend) && frontend.length && cmp(frontend, min_frontend.readText) < 0) continue;
+			// Destiny: tests needing the vibe-d packages wait until those are
+			// ported (and tested locally) in Destiny-Org/packages
+			if (exists(script.name ~ ".needs_vibe") && environment.get("DES_TEST_VIBE") != "1")
+			{
+				log("Skipping " ~ script.name.baseName ~ ": needs the vibe-d packages (set DES_TEST_VIBE=1 to run)");
+				continue;
+			}
 			log("Running " ~ script ~ "...");
 			if (spawnShell(script.name, ["DUB":dub, "DC":dc, "CURR_DIR":curr_dir]).wait)
 				logError("Script failure.");

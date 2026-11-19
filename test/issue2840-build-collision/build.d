@@ -1,4 +1,4 @@
-#!/usr/bin/env dub
+#!/usr/bin/env des
 /++ dub.json:
    {
        "name": "build"

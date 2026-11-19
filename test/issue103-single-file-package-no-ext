@@ -1,4 +1,4 @@
-#!../bin/dub
+#!../bin/des
 /+ dub.sdl:
    name "single-file-test"
 +/

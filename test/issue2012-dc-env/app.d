@@ -1,4 +1,4 @@
-#!/usr/bin/env dub
+#!/usr/bin/env des
 /+ dub.sdl:
 	name "app"
 +/
@@ -10,7 +10,7 @@ void main(string[] args)
     version (LDC)
         immutable expected = "ldc2";
     version (DigitalMars)
-        immutable expected = "dmd";
+        immutable expected = "destiny"; // Destiny's compiler
     version (GNU)
         immutable expected = "gdc";
 

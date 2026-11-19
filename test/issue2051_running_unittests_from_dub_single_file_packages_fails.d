@@ -27,7 +27,7 @@ int main()
 {
 	auto dub = environment.get("DUB");
 	if (!dub.length)
-		dub = buildPath(".", "bin", "dub");
+		dub = buildPath(".", "bin", "des");
 
     string destinationDirectory = tempDir;
     // remove any ending slahes (which can for some reason be added at the end by tempDir, which fails on OSX) https://issues.dlang.org/show_bug.cgi?id=22738
@@ -39,7 +39,7 @@ int main()
 		filename = destinationDirectory.buildPath("issue2051_success.d");
 		auto f = File(filename, "w");
 		f.write(
-`#!/usr/bin/env dub
+`#!/usr/bin/env des
 /+ dub.sdl:
 	name "issue2051"
 	dependency "taggedalgebraic" version="~>0.11.0"
@@ -76,7 +76,7 @@ unittest
 		filename = destinationDirectory.buildPath("issue2051_fail.d");
 		auto f = File(filename, "w");
 		f.write(
-`#!/usr/bin/env dub
+`#!/usr/bin/env des
 /+ dub.sdl:
 	name "issue2051"
 +/

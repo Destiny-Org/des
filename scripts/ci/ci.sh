@@ -2,8 +2,8 @@
 
 set -v -e -o pipefail
 
-vibe_ver=$(jq -r '.versions | .["vibe-d"]' < dub.selections.json)
-des fetch vibe-d@$vibe_ver # get optional dependency
+# Destiny: the optional vibe-d integration is tested again once the vibe
+# packages in Destiny-Org/packages pass Destiny's safety checks.
 des test --compiler=${DC} -c library-nonet
 
 
@@ -17,5 +17,8 @@ else
     des test --compiler=${DC} -b unittest-cov
     destiny -revert=safedefault -run build.d -revert=safedefault
 fi
+# The integration tests download from a local test registry (no network
+# for test packages), then from Destiny-Org/packages for real ones.
+export DUB_REGISTRY="$(bash test/fixtures/make-fixtures.sh);destiny+https://github.com/Destiny-Org/packages"
 DUB=`pwd`/bin/des DC=${DC} des --single ./test/run-unittest.d
 DUB=`pwd`/bin/des DC=${DC} test/run-unittest.sh

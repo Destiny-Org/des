@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 . $(dirname "${BASH_SOURCE[0]}")/common.sh
+unset DFLAGS # Destiny: the CI exports DFLAGS; this test compares exact compiler flags
 
 cd "$CURR_DIR"/describe-project
 

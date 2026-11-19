@@ -182,6 +182,21 @@ void runCommands(in string[] commands, string[string] env, string workDir)
 
 version (Have_vibe_d_http)
 	public import vibe.http.common : HTTPStatusException;
+else version (DubUseCurl) {}
+else
+{
+	/// Destiny: with neither curl nor vibe-d (the library-nonet build) there
+	/// is no HTTP client, but the package suppliers still name this type.
+	class HTTPStatusException : Exception
+	{
+		int status; /// the HTTP status code
+		this(int status, string msg, string file = __FILE__, size_t line = __LINE__) pure nothrow @safe
+		{
+			super(msg, file, line);
+			this.status = status;
+		}
+	}
+}
 
 /**
 	Downloads a file from the specified URL.
@@ -388,11 +403,11 @@ public NativePath getDUBExePath(in string compilerBinary=null)
 		import std.process : environment;
 
 		version(Windows) {
-			enum exeName = "dub.exe";
+			enum exeName = "des.exe"; // Destiny: the command is des
 			enum pathSep = ';';
 		}
 		else {
-			enum exeName = "dub";
+			enum exeName = "des"; // Destiny: the command is des
 			enum pathSep = ':';
 		}
 

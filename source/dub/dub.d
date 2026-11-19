@@ -794,6 +794,10 @@ class Dub {
 		if (!test_config) return; // target type "none"
 
 		settings.config = test_config;
+		// Destiny: the `$DFLAGS` build type (DFLAGS set) has no build options,
+		// but a test build must still compile the unittests
+		if (settings.buildType == "$DFLAGS")
+			settings.buildSettings.addOptions(BuildOption.unittests);
 
 		auto generator = createProjectGenerator("build", m_project);
 		generator.generate(settings);

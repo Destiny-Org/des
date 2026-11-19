@@ -9,11 +9,11 @@ function cleanup {
 }
 trap cleanup EXIT
 
-cd ${TMPDIR} && $DUB fetch --cache=local bloom &
+cd ${TMPDIR} && $DUB fetch --cache=local gitcompatibledubpackage &
 pid1=$!
 sleep 0.5
-cd ${TMPDIR} && $DUB fetch --cache=local bloom &
+cd ${TMPDIR} && $DUB fetch --cache=local gitcompatibledubpackage &
 pid2=$!
 wait $pid1
 wait $pid2
-[ -d ${TMPDIR}/.dub/packages/bloom* ]
+[ -d ${TMPDIR}/.dub/packages/gitcompatibledubpackage* ]

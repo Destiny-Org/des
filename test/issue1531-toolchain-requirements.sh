@@ -37,7 +37,7 @@ test_dub_req_fail "~>999.0"
 if [[ $DC == *ldc* ]] || [[ $DC == *ldmd* ]]; then
     VER_REG='\((([[:digit:]]+)(\.[[:digit:]]+\.[[:digit:]]+[A-Za-z0-9.+-]*))\)'
     DC_NAME=ldc
-elif [[ $DC == *dmd* ]]; then
+elif [[ $DC == *dmd* ]] || [[ $DC == *destiny* ]]; then # Destiny: a dmd-style compiler
     VER_REG='v(([[:digit:]]+)(\.[[:digit:]]+\.[[:digit:]]+[A-Za-z0-9.+-]*))'
     DC_NAME=dmd
 elif [[ $DC == *gdc* ]]; then

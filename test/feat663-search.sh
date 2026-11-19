@@ -7,9 +7,10 @@ fi
 if ${DUB} search nonexistent123456789package 2>/dev/null; then
     die $LINENO '`dub search nonexistent123456789package` succeeded'
 fi
-if ! OUTPUT=$(${DUB} search '"dub-registry"' -v 2>&1); then
-    die $LINENO '`dub search "dub-registry"` failed' "$OUTPUT"
+# Destiny: searches the test registry (test/fixtures/make-fixtures.sh)
+if ! OUTPUT=$(${DUB} search 'gitcompatibledubpackage' -v 2>&1); then
+    die $LINENO '`des search gitcompatibledubpackage` failed' "$OUTPUT"
 fi
-if ! grep -q '^\s\sdub-registry (.*)\s'<<<"$OUTPUT"; then
-    die $LINENO '`grep -q '"'"'^\s\sdub-registry (.*)\s'"'"'` failed' "$OUTPUT"
+if ! grep -q '^\s\sgitcompatibledubpackage (.*)\s'<<<"$OUTPUT"; then
+    die $LINENO '`grep -q '"'"'^\s\sgitcompatibledubpackage (.*)\s'"'"'` failed' "$OUTPUT"
 fi

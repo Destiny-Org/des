@@ -24,6 +24,6 @@ configuration "exe_dynamic" {
     targetPath "output/exe_dynamic"
     subConfiguration "dep1" "dynlib"
     dflags "-link-defaultlib-shared" platform="ldc"
-    dflags "-defaultlib=libphobos2.so" platform="linux-dmd"
+    dflags "-defaultlib=libfate.so" platform="linux-dmd" // Destiny: Fate is the standard library
     lflags "-rpath" "@executable_path" platform="osx"
 }

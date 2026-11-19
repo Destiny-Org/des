@@ -11,7 +11,7 @@ import std.path;
 
 int main()
 {
-	const dub = environment.get("DUB", buildPath(__FILE_FULL_PATH__.dirName.dirName, "bin", "dub"));
+	const dub = environment.get("DUB", buildPath(__FILE_FULL_PATH__.dirName.dirName, "bin", "des"));
 	const curr_dir = environment.get("CURR_DIR", buildPath(__FILE_FULL_PATH__.dirName));
 	const dc = environment.get("DC", "dmd");
 	const cmd = [dub, "build", "--compiler", dc];

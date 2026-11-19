@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 . $(dirname "${BASH_SOURCE[0]}")/common.sh
+unset DFLAGS # Destiny: the CI exports DFLAGS; this test compares exact compiler flags
 
 cd "$CURR_DIR"/describe-project
 
@@ -91,7 +92,7 @@ if ! diff -b -B "$temp_file_normal" "$temp_file_zero_delim"; then
 fi
 
 # DMD-only beyond this point
-if [ "${DC}" != "dmd" ]; then
+if [ "$(basename "${DC}")" != "destiny" ]; then
     echo Skipping DMD-centric tests on configuration that lacks DMD.
     exit
 fi

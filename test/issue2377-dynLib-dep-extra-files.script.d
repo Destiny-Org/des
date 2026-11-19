@@ -21,7 +21,7 @@ void main() {
 
     version (Windows) enum exeExt = ".exe";
     else              enum exeExt = "";
-    const dub = environment.get("DUB", buildPath(__FILE_FULL_PATH__.dirName.dirName, "bin", "dub"~exeExt));
+    const dub = environment.get("DUB", buildPath(__FILE_FULL_PATH__.dirName.dirName, "bin", "des"~exeExt));
 
     enum testDir = buildPath(__FILE_FULL_PATH__.dirName, "issue2377-dynLib-dep-extra-files");
 
