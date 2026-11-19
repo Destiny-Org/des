@@ -9,7 +9,7 @@ Please search for existing solutions to your problem before filling out this bug
 <!-- replace examples with your info -->
 - **dub version**: (e.g. dub 1.3.0)
 - **OS Platform and distribution**: (e.g. Windows 10, Linux Ubuntu 16.04)
-- **compiler version** (e.g. dmd-2.074.1)
+- **compiler version** (output of `destiny --version`)
 
 ### Bug Description
 

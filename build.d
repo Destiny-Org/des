@@ -1,13 +1,13 @@
 #!/usr/bin/env rdmd
 /*******************************************************************************
 
-    Standalone build script for DUB
+    Standalone build script for DES
 
     This script can be called from anywhere, as it deduces absolute paths
     based on the script's location in the source tree.
 
     Invoking it while making use of all the options would look like this:
-        DMD=ldmd2 GITVER="1.2.3" ./build.d -O -inline
+        GITVER="1.2.3" destiny -revert=safedefault -run build.d -O -inline
     The GITVER environment variable determines the version of
     the repository to build against.
 
@@ -41,7 +41,7 @@ version (Windows) {
 	immutable DubBinPath = RootPath.buildPath("bin", "des");
 }
 
-// Flags for DMD
+// Flags for the compiler
 immutable OutputFlag = "-of" ~ DubBinPath;
 immutable IncludeFlag = "-I" ~ RootPath.buildPath("source");
 immutable DefaultDFLAGS = [ "-g", "-O", "-w" ];
@@ -58,13 +58,12 @@ int main(string[] args)
     {
         writeln("USAGE: ./build.d [compiler args (default:", DefaultDFLAGS, "]");
         writeln();
-        writeln("  In order to build DUB, a version module must first be generated.");
+        writeln("  In order to build DES, a version module must first be generated.");
         writeln("  If the GITVER environment variable is present, it will be used to generate the version module.");
         writeln("  Otherwise this script will look for a pre-existing version module.");
         writeln("  If no GITVER is provided and no version module exists, `git describe` will be called");
         writeln("  Build flags can be provided as arguments.");
-        writeln("  LDC or GDC can be used by setting the `DMD` value to " ~
-                "`ldmd2` and `gdmd` (or their path), respectively.");
+        writeln("  Another Destiny compiler can be used by setting `DC` to its path.");
         return 1;
     }
 
@@ -83,7 +82,7 @@ int main(string[] args)
         "-version=DubUseCurl", "-version=DubApplication",
         ] ~ dflags ~ [ "@build-files.txt" ];
 
-    writeln("Building dub using ", dmd, " (dflags: ", dflags, "), this may take a while...");
+    writeln("Building DES using ", dmd, " (dflags: ", dflags, "), this may take a while...");
     auto proc = execute(command);
     if (proc.status != 0)
     {
@@ -160,8 +159,7 @@ enum dubVersion = "%s";
 /**
    Detect which compiler is available
 
-   Default to DMD, then LDC (ldmd2), then GDC (gdmd).
-   If none is in the PATH, an error will be thrown.
+   Uses `DC` when set, otherwise `destiny` from the PATH.
 
    Note:
      It would be optimal if we could get the path of the compiler
@@ -169,12 +167,12 @@ enum dubVersion = "%s";
  */
 string getCompiler ()
 {
-    auto env = environment.get("DMD", "");
+    auto env = environment.get("DC", "");
     // If the user asked for a compiler explicitly, respect it
     if (env.length)
         return env;
 
-    static immutable Compilers = [ "dmd", "ldmd2", "gdmd" ];
+    static immutable Compilers = [ "destiny" ];
     foreach (bin; Compilers)
     {
         try
@@ -187,6 +185,6 @@ string getCompiler ()
             continue;
     }
     writeln("No compiler has been found in the PATH. Attempted values: ", Compilers);
-    writeln("Make sure one of those is in the PATH, or set the `DMD` variable");
+    writeln("Make sure destiny is in the PATH, or set the `DC` variable");
     return null;
 }

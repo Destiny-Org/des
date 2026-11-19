@@ -212,6 +212,8 @@ class DestinyPackageSupplier : PackageSupplier
 
 		const work = buildPath(tempDir, "des-packages-%s-%s".format(name.main, uniform(0, uint.max)));
 		mkdirRecurse(work);
+		scope (failure) removeCheckout(work);
+		tempCheckouts ~= work; // removed when DES exits (see the module destructor)
 		logInfo("Fetching", Color.light_green, "%s %s from %s", name.main, ver["version"].get!string, m_repo);
 
 		auto run(string[] args)
@@ -228,6 +230,14 @@ class DestinyPackageSupplier : PackageSupplier
 		enforce(exists(dir), "Tag %s of %s has no folder %s".format(tag, m_repo, path));
 		m_checkouts[tag] = dir;
 		return dir;
+	}
+
+	/// Deletes a temporary checkout, ignoring errors (it is only a cache).
+	private static void removeCheckout(string work) nothrow
+	{
+		import std.file : exists, rmdirRecurse;
+		try { if (exists(work)) rmdirRecurse(work); }
+		catch (Exception) {}
 	}
 
 	/// Zips `dir` with its contents under `root/`, the layout DES extracts.
@@ -257,4 +267,15 @@ class DestinyPackageSupplier : PackageSupplier
 		}
 		return cast(ubyte[]) zip.build();
 	}
+}
+
+/// Temporary checkouts made by this process; each is a sparse clone of the
+/// packages repository in the temp folder.
+private string[] tempCheckouts;
+
+static ~this()
+{
+	foreach (work; tempCheckouts)
+		DestinyPackageSupplier.removeCheckout(work);
+	tempCheckouts = null;
 }

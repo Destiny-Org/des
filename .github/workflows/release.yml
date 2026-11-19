@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     name: 'Build dub ${{ github.event.release.tag_name }}'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
     steps:
@@ -29,7 +29,6 @@ jobs:
       - name: Build release
         env:
           GITVER: ${{ github.event.release.tag_name }}
-          DMD: destiny
         run: |
           destiny -revert=safedefault -run ./build.d -revert=safedefault -O -release
           cd bin

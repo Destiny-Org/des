@@ -1364,7 +1364,10 @@ abstract class PackageBuildCommand : Command {
 		}
 
 		if (this.baseSettings.buildType.length == 0) {
-			if (environment.get("DFLAGS") !is null) this.baseSettings.buildType = "$DFLAGS";
+			// DFLAGS from the environment is added to every build type, so
+			// `des test` keeps its unittest build type (else -unittest is lost)
+			if (environment.get("DFLAGS") !is null && default_build_type != "unittest")
+				this.baseSettings.buildType = "$DFLAGS";
 			else this.baseSettings.buildType = default_build_type;
 		}
 

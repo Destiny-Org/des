@@ -33,7 +33,7 @@ int main()
 		const file = buildPath(dir, "win32_default.d");
 
 		const dub = environment.get("DUB", buildPath(dirName(dir), "bin", "dub.exe"));
-		const dmd = environment.get("DMD", "dmd");
+		const dmd = environment.get("DC", "destiny");
 
 		int exitCode;
 

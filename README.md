@@ -31,7 +31,7 @@ To use a package from a local folder instead, register it with
 DES is built with Destiny:
 
 ```
-DMD=destiny GITVER=v1.40.0-destiny destiny -revert=safedefault -run build.d -revert=safedefault -O
+GITVER=v1.40.0-destiny destiny -revert=safedefault -run build.d -revert=safedefault -O
 ./bin/des --version     # DES version 1.40.0-destiny
 ```
 

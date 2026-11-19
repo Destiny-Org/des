@@ -24,14 +24,14 @@ int main(string[] args)
 	}
 
 	//** if [ -z ${DC:-} ]; then
-	//**     log '$DC not defined, assuming dmd...'
-	//**     DC=dmd
+	//**     log '$DC not defined, assuming destiny...'
+	//**     DC=destiny
 	//** fi
 	auto dc = environment.get("DC", "");
 	if (dc == "")
 	{
-		log(`Environment variable "DC" not defined, assuming dmd...`);
-		dc = "dmd";
+		log(`Environment variable "DC" not defined, assuming destiny...`);
+		dc = "destiny";
 	}
 
 	// Clear log file

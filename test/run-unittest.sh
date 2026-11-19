@@ -29,8 +29,8 @@ if [ -z ${DUB:-} ]; then
 fi
 
 if [ -z ${DC:-} ]; then
-    log '$DC not defined, assuming dmd...'
-    DC=dmd
+    log '$DC not defined, assuming destiny...'
+    DC=destiny
 fi
 
 DC_BIN=$(basename "$DC")
@@ -41,8 +41,8 @@ if [ -z ${FRONTEND:-} ]; then
     if [ "$DC_BIN" == "ldc2" ]; then
         FRONTEND=$(ldc2 --version | grep 'based on DMD v2.' | sed -E -n 's/^.*DMD v(2\.[0-9]+\.[0-9]).*$/\1/p')
     fi
-    if [ "$DC_BIN" == "dmd" ]; then
-        FRONTEND=$(dmd --version | grep 'D Compiler v2.' | sed -E -n 's/^.*D Compiler v(2\.[0-9]+\.[0-9]).*$/\1/p')
+    if [ "$DC_BIN" == "destiny" ]; then
+        FRONTEND=$(destiny --version | grep 'Compiler v2.' | sed -E -n 's/^.*Compiler v(2\.[0-9]+\.[0-9]).*$/\1/p')
     fi
 fi
 
